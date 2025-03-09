@@ -1,12 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-
 const connectDB = require("./src/utils/db"); // Importamos la connexión a la base de datos
 
-const FrasesController = require("./src/controllers/FrasesController"); // Importamos el controlador de frases
-const ChistesController = require("./src/controllers/ChistesController"); // Importamos el controlador de chistes
-const DatosCuriososController = require("./src/controllers/DatosCuriososController"); // Importamos el controlador de datos curiosos
+// Importamos las rutas
+const frasesRoutes = require("./src/routes/frasesRoutes");
+const chistesRoutes = require("./src/routes/chistesRoutes");
+const datosCuriososRoutes = require("./src/routes/datosCuriososRoutes");
+const solicitudesRoutes = require("./src/routes/solicitudes/solicitudesRoutes");
 
 const app = express();
 app.use(cors());
@@ -14,24 +15,15 @@ app.use(express.json());
 
 connectDB(); // Conectamos a la base de datos
 
-app.get("/api/frases", FrasesController.obtenerFrases);
-app.post("/api/frases", FrasesController.agregarFrase);
-app.delete("/api/frases/:id", FrasesController.eliminarFrase);
+// Usar las rutas
+app.use("/api/frases", frasesRoutes);
+app.use("/api/chistes", chistesRoutes);
+app.use("/api/datos-curiosos", datosCuriososRoutes);
+app.use("/api/solicitudes", solicitudesRoutes);
 
-app.get("/api/chistes", ChistesController.obtenerChiste);
-app.post("/api/chistes", ChistesController.agregarChiste);
-app.delete("/api/chistes/:id", ChistesController.eliminarChiste);
-
-app.get("/api/datos-curiosos", DatosCuriososController.obtenerDatoCurioso);
-app.post("/api/datos-curiosos", DatosCuriososController.agregarDatoCurioso);
-app.delete(
-  "/api/datos-curiosos/:id",
-  DatosCuriososController.eliminarDatoCurioso
-);
-
-app.use(function (req, res) {
-  res.status(404);
-  res.send({ error: "Sorry, can't find that" });
+// Manejo de rutas no encontradas
+app.use((req, res) => {
+  res.status(404).json({ error: "Ruta no encontrada" });
 });
 
 const PORT = process.env.PORT || 3000;
