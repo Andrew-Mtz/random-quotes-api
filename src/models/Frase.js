@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 // Definir el esquema para la colección "Frases"
 const FraseSchema = new mongoose.Schema({
   categoria: { type: String, required: true },
-  texto: { type: String, required: true, unique: true }, // 'unique: true' evita frases duplicadas automáticamente
+  texto: { type: String, required: true, unique: true },
+  autor: { type: String, default: "Anónimo" }, // Nuevo campo
 });
 
 // Crear el modelo basado en el esquema

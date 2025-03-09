@@ -3,71 +3,31 @@ const express = require("express");
 const cors = require("cors");
 
 const connectDB = require("./src/utils/db"); // Importamos la connexión a la base de datos
-const Frase = require("./src/models/Frase"); // Importamos el modelo Frase
+
+const FrasesController = require("./src/controllers/FrasesController"); // Importamos el controlador de frases
+const ChistesController = require("./src/controllers/ChistesController"); // Importamos el controlador de chistes
+const DatosCuriososController = require("./src/controllers/DatosCuriososController"); // Importamos el controlador de datos curiosos
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-connectDB();
+connectDB(); // Conectamos a la base de datos
 
-app.get("/api/frases", async (req, res) => {
-  const categoria = req.query.categoria;
+app.get("/api/frases", FrasesController.obtenerFrases);
+app.post("/api/frases", FrasesController.agregarFrase);
+app.delete("/api/frases/:id", FrasesController.eliminarFrase);
 
-  let frases;
-  let error;
-  if (categoria) {
-    frases = await Frase.find({ categoria: categoria.toLowerCase() });
-    error = "No hay frases en esta categoría";
-  } else {
-    frases = await Frase.find();
-    error = "Aún no hay frases en la base de datos";
-  }
+app.get("/api/chistes", ChistesController.obtenerChiste);
+app.post("/api/chistes", ChistesController.agregarChiste);
+app.delete("/api/chistes/:id", ChistesController.eliminarChiste);
 
-  if (frases.length === 0) {
-    return res.status(404).json({ error });
-  }
-
-  const randomIndex = Math.floor(Math.random() * frases.length);
-  res.json({ frase: frases[randomIndex].texto });
-});
-
-app.post("/api/frases", async (req, res) => {
-  const { categoria, texto } = req.body;
-
-  if (!categoria || !texto) {
-    return res.status(400).json({ error: "Debe incluir categoría y texto" });
-  }
-
-  if (texto.length < 5) {
-    return res
-      .status(400)
-      .json({ error: "La frase debe tener al menos 5 caracteres" });
-  }
-
-  try {
-    // 📌 Validar si la frase ya existe en la base de datos
-    const fraseExistente = await Frase.findOne({ texto });
-    if (fraseExistente) {
-      return res
-        .status(400)
-        .json({ error: "La frase ya existe en la base de datos" });
-    }
-
-    // 📌 Guardar la nueva frase
-    const nuevaFrase = new Frase({ categoria: categoria.toLowerCase(), texto });
-    await nuevaFrase.save();
-
-    res.status(201).json({
-      mensaje: "Frase guardada en la base de datos",
-      frase: nuevaFrase,
-    });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error en el servidor", detalle: error.message });
-  }
-});
+app.get("/api/datos-curiosos", DatosCuriososController.obtenerDatoCurioso);
+app.post("/api/datos-curiosos", DatosCuriososController.agregarDatoCurioso);
+app.delete(
+  "/api/datos-curiosos/:id",
+  DatosCuriososController.eliminarDatoCurioso
+);
 
 app.use(function (req, res) {
   res.status(404);
