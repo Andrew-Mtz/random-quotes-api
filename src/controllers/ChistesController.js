@@ -2,17 +2,18 @@ const Chiste = require("../models/Chiste");
 
 // GET
 exports.obtenerChiste = async (req, res) => {
-  const categoria = req.query.categoria;
-  let chistes;
+  const { categoria, tipo } = req.query;
+  let filtro = {};
 
-  if (categoria) {
-    chistes = await Chiste.find({ categoria: categoria.toLowerCase() });
-  } else {
-    chistes = await Chiste.find();
-  }
+  if (categoria) filtro.categoria = categoria.toLowerCase();
+  if (tipo) filtro.tipo = tipo;
+
+  const chistes = await Chiste.find(filtro);
 
   if (chistes.length === 0) {
-    return res.status(404).json({ error: "No hay chistes en esta categoría" });
+    return res
+      .status(404)
+      .json({ error: "No hay chistes con estos criterios" });
   }
 
   const randomIndex = Math.floor(Math.random() * chistes.length);
@@ -21,15 +22,30 @@ exports.obtenerChiste = async (req, res) => {
 
 // POST
 exports.agregarChiste = async (req, res) => {
-  const { categoria, pregunta, respuesta, texto } = req.body;
+  const { categoria, tipo, pregunta, respuesta, texto } = req.body;
 
-  if (!pregunta && !texto) {
-    return res.status(400).json({ error: "Debe incluir un chiste" });
+  if (!tipo || !["pregunta-respuesta", "texto"].includes(tipo)) {
+    return res
+      .status(400)
+      .json({ error: "El tipo debe ser 'pregunta-respuesta' o 'texto'" });
+  }
+
+  if (tipo === "pregunta-respuesta" && (!pregunta || !respuesta)) {
+    return res.status(400).json({
+      error: "Debe incluir pregunta y respuesta para este tipo de chiste",
+    });
+  }
+
+  if (tipo === "texto" && !texto) {
+    return res
+      .status(400)
+      .json({ error: "Debe incluir texto para este tipo de chiste" });
   }
 
   try {
     const nuevoChiste = new Chiste({
       categoria: categoria?.toLowerCase(),
+      tipo,
       pregunta,
       respuesta,
       texto,
