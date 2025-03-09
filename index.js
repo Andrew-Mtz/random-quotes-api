@@ -6,7 +6,7 @@ const connectDB = require("./src/utils/db"); // Importamos la connexión a la ba
 const Frase = require("./src/models/Frase"); // Importamos el modelo Frase
 
 const app = express();
-app.use(cors({ origin: "*" }));
+app.use(cors());
 app.use(express.json());
 
 connectDB();
