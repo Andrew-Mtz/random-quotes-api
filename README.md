@@ -24,52 +24,6 @@
 { "error": "No hay frases en esta categoría" }
 ```
 
-**POST** `https://random-quotes-0v69.onrender.com/api/frases`
-
-Las claves con '\*' significan que son obligatorias.
-
-**Ejemplo de solicitud**
-
-```json
-{
-  "categoria*": "vida",
-  "texto*": "Haz de cada día tu obra maestra.",
-  "autor": "John Wooden"
-}
-```
-
-**Ejemplo de respuesta**
-
-```json
-{
-  "mensaje": "Frase guardada en la base de datos",
-  "frase": {
-    "categoria": "vida",
-    "texto": "Haz de cada día tu obra maestra.",
-    "autor": "John Wooden",
-    "_id": "67cd3f6fbbbe40f3f866d6af",
-    "__v": 0
-  }
-}
-```
-
-**DELETE** `https://random-quotes-0v69.onrender.com/api/frases:id`
-
-**Ejemplo de respuesta**
-
-```json
-{
-  "mensaje": "Frase eliminada con éxito",
-  "frase": {
-    "autor": "Anónimo",
-    "_id": "67cd30f88b36ff71a3fedc15",
-    "categoria": "motivacion",
-    "texto": "El éxito es la suma de pequeños esfuerzos repetidos día tras día.",
-    "__v": 0
-  }
-}
-```
-
 ### 📌 CHISTES
 
 **GET** `https://random-quotes-0v69.onrender.com/api/chistes`
@@ -122,52 +76,6 @@ Las claves con '\*' significan que son obligatorias.
 }
 ```
 
-**POST** `https://random-quotes-0v69.onrender.com/api/chistes`
-
-Las claves con '\*' significan que son obligatorias.
-
-**Ejemplo de solicitud**
-
-```json
-{
-  "categoria*": "Humor negro",
-  "tipo": "texto",
-  "texto": "El doctor me dijo que tengo 5 meses de vida… así que le robé su reloj, ahora tengo 7."
-}
-```
-
-**Ejemplo de respuesta**
-
-```json
-{
-  "mensaje": "Chiste agregado",
-  "chiste": {
-    "categoria": "humor negro",
-    "tipo": "texto",
-    "texto": "El doctor me dijo que tengo 5 meses de vida… así que le robé su reloj, ahora tengo 7.",
-    "_id": "67cd443b45826a998eecf8f9",
-    "__v": 0
-  }
-}
-```
-
-**DELETE** `https://random-quotes-0v69.onrender.com/api/chistes:id`
-
-**Ejemplo de respuesta**
-
-```json
-{
-  "mensaje": "Chiste eliminado con éxito",
-  "chiste": {
-    "_id": "67cd443b45826a998eecf8f9",
-    "categoria": "humor negro",
-    "tipo": "texto",
-    "texto": "El doctor me dijo que tengo 5 meses de vida… así que le robé su reloj, ahora tengo 7.",
-    "__v": 0
-  }
-}
-```
-
 ### 📌 DATOS CURIOSOS
 
 **GET** `https://random-quotes-0v69.onrender.com/api/datos-curiosos`
@@ -206,9 +114,65 @@ Las claves con '\*' significan que son obligatorias.
 }
 ```
 
-**POST** `https://random-quotes-0v69.onrender.com/api/datos-curiosos`
+### SOLICITUDES
 
 Las claves con '\*' significan que son obligatorias.
+
+**POST** `https://random-quotes-0v69.onrender.com/api/solicitudes/frases`
+
+**Ejemplo de solicitud**
+
+```json
+{
+  "categoria*": "Vida",
+  "texto*": "Haz de cada día tu obra maestra.",
+  "autor": "John Wooden"
+}
+```
+
+**Ejemplo de respuesta**
+
+```json
+{
+  "mensaje": "Solicitud enviada para revisión",
+  "solicitud": {
+    "categoria": "vida",
+    "texto": "Haz de cada día tu obra maestra.",
+    "autor": "John Wooden",
+    "_id": "67cd4a4545826a998eecf91f",
+    "__v": 0
+  }
+}
+```
+
+**POST** `https://random-quotes-0v69.onrender.com/api/solicitudes/chistes`
+
+**Ejemplo de solicitud**
+
+```json
+{
+  "categoria*": "Humor negro",
+  "tipo": "texto",
+  "texto": "El doctor me dijo que tengo 5 meses de vida… así que le robé su reloj, ahora tengo 7."
+}
+```
+
+**Ejemplo de respuesta**
+
+```json
+{
+  "mensaje": "Solicitud enviada para revisión",
+  "solicitud": {
+    "categoria": "humor negro",
+    "tipo": "texto",
+    "texto": "El doctor me dijo que tengo 5 meses de vida… así que le robé su reloj, ahora tengo 7.",
+    "_id": "67cd4a4545826a998eecf91f",
+    "__v": 0
+  }
+}
+```
+
+**POST** `https://random-quotes-0v69.onrender.com/api/solicitudes/datos-curiosos`
 
 **Ejemplo de solicitud**
 
@@ -223,29 +187,11 @@ Las claves con '\*' significan que son obligatorias.
 
 ```json
 {
-  "mensaje": "Dato curioso agregado",
-  "dato": {
+  "mensaje": "Solicitud enviada para revisión",
+  "solicitud": {
     "categoria": "espacio",
     "texto": "En la Luna no hay viento, por eso las huellas de los astronautas permanecerán intactas por millones de años.",
-    "autor": "Anónimo",
     "_id": "67cd4a4545826a998eecf91f",
-    "__v": 0
-  }
-}
-```
-
-**DELETE** `https://random-quotes-0v69.onrender.com/api/datos-curiosos:id`
-
-**Ejemplo de respuesta**
-
-```json
-{
-  "mensaje": "Dato curioso eliminado con éxito",
-  "dato": {
-    "_id": "67cd401dbbbe40f3f866d6ca",
-    "categoria": "espacio",
-    "texto": "En la Luna no hay viento, por eso las huellas de los astronautas permanecerán intactas por millones de años.",
-    "autor": "Anónimo",
     "__v": 0
   }
 }

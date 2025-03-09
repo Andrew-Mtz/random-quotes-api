@@ -59,6 +59,33 @@ exports.agregarFrase = async (req, res) => {
   }
 };
 
+// PUT
+exports.editarFrase = async (req, res) => {
+  const { id } = req.params;
+  const { categoria, texto, autor } = req.body;
+
+  try {
+    const fraseActualizada = await Frase.findByIdAndUpdate(
+      id,
+      { categoria, texto, autor },
+      { new: true }
+    );
+
+    if (!fraseActualizada) {
+      return res.status(404).json({ error: "Frase no encontrada" });
+    }
+
+    res.json({
+      mensaje: "Frase actualizada con éxito",
+      frase: fraseActualizada,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Error en el servidor", detalle: error.message });
+  }
+};
+
 // DELETE
 exports.eliminarFrase = async (req, res) => {
   const { id } = req.params;

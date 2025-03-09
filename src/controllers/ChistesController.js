@@ -30,6 +30,10 @@ exports.agregarChiste = async (req, res) => {
       .json({ error: "El tipo debe ser 'pregunta-respuesta' o 'texto'" });
   }
 
+  if (!categoria) {
+    return res.status(400).json({ error: "Debe incluir categoría" });
+  }
+
   if (tipo === "pregunta-respuesta" && (!pregunta || !respuesta)) {
     return res.status(400).json({
       error: "Debe incluir pregunta y respuesta para este tipo de chiste",
@@ -44,7 +48,7 @@ exports.agregarChiste = async (req, res) => {
 
   try {
     const nuevoChiste = new Chiste({
-      categoria: categoria?.toLowerCase(),
+      categoria: categoria.toLowerCase(),
       tipo,
       pregunta,
       respuesta,
